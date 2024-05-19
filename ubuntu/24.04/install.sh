@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# This script is for Ubuntu 22.04 Jammy Jellyfish to download and install XRDP+XORGXRDP via
+# This script is for Ubuntu 24.04 Noble Numbat to download and install XRDP+XORGXRDP via
 # source.
 #
 # Major thanks to: http://c-nergy.be/blog/?p=11336 for the tips.
@@ -35,8 +35,11 @@ fi
 #
 
 # Install hv_kvp utils
-apt install -y linux-tools-virtual${HWE}
-apt install -y linux-cloud-tools-virtual${HWE}
+#apt install -y linux-tools-virtual${HWE}
+#apt install -y linux-cloud-tools-virtual${HWE}
+
+# Install the azure kernel and associated tools
+apt install -y linux-azure${HWE}
 
 # Install the xrdp service so we have the auto start behavior
 apt install -y xrdp
@@ -85,15 +88,15 @@ if [ ! -e /etc/modules-load.d/hv_sock.conf ]; then
 fi
 
 # Configure the policy xrdp session
-mkdir -p /etc/polkit-1/localauthority/50-local.d/
-cat > /etc/polkit-1/localauthority/50-local.d/45-allow-colord.pkla <<EOF
-[Allow Colord all Users]
-Identity=unix-user:*
-Action=org.freedesktop.color-manager.create-device;org.freedesktop.color-manager.create-profile;org.freedesktop.color-manager.delete-device;org.freedesktop.color-manager.delete-profile;org.freedesktop.color-manager.modify-device;org.freedesktop.color-manager.modify-profile
-ResultAny=no
-ResultInactive=no
-ResultActive=yes
-EOF
+#mkdir -p /etc/polkit-1/localauthority/50-local.d/
+#cat > /etc/polkit-1/localauthority/50-local.d/45-allow-colord.pkla <<EOF
+#[Allow Colord all Users]
+#Identity=unix-user:*
+#Action=org.freedesktop.color-manager.create-device;org.freedesktop.color-manager.create-profile;org.freedesktop.color-manager.delete-device;org.freedesktop.color-manager.delete-profile;org.freedesktop.color-manager.modify-device;org.freedesktop.color-manager.modify-profile
+#ResultAny=no
+#ResultInactive=no
+#ResultActive=yes
+#EOF
 
 # reconfigure the service
 systemctl daemon-reload
